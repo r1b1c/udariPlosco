@@ -19,6 +19,6 @@ public class score : MonoBehaviour
         mytext.text = scoree.ToString();
     }
 
-
+    //test ce commita
 
 }
