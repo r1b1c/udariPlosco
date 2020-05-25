@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "764418710709",
+    "firebase_url": "https://udariploscodb.firebaseio.com",
+    "project_id": "udariploscodb",
+    "storage_bucket": "udariploscodb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:764418710709:android:58c38d67451df6c59db2fc",
+        "android_client_info": {
+          "package_name": "com.udariplosco.databaseunity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "764418710709-jjcl83q516nreegopl3f1gdg4etsv3h8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAl3S_BlIE3r0FUIMpSn5NujykhhRd52ZA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "764418710709-jjcl83q516nreegopl3f1gdg4etsv3h8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
