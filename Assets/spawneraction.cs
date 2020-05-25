@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 
+// Scripta odgovorna za kreiranje spawnerja z njegovim obnašanjem,
+// dodajanje ploščice v posamezno traso
 public class spawneraction : MonoBehaviour
 {
     public float width = 10f;
@@ -34,7 +36,7 @@ public class spawneraction : MonoBehaviour
         }
 
     }
-
+// kreiramo gizmos spawnerja, znotraj katerega se nahajajo posamezne trase
     void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(width, height, 0));
@@ -42,22 +44,28 @@ public class spawneraction : MonoBehaviour
 
 
     // Update is called once per frame
+
     void Update()
     {
+      //ko so vse trase brez ploščic kreiramo novo
         if (checkforempty())
         {
-            spawnuntill();
-        }
-    }
-    void spawner()
-    {
-        foreach(Transform child in transform)
-        {
-            GameObject piano = Instantiate(pianotile, child.position, Quaternion.identity);
-            piano.transform.parent = child;
+            spawnuotill();
         }
     }
 
+    void spawner()
+    {
+        //Gremo skozi vse otroke spawnerja (trase)
+        foreach(Transform child in transform)
+        {
+          // kopiramo instanco pianotile (ploščica) in ji dao isti položaj kot je njena trasa brez sprememb v rotaciiji
+            GameObject piano = Instantiate(pianotile, child.position, Quaternion.identity);
+          // hierarhično vstavimo kot starša traso ki smo jo ustvarili v position script
+            piano.transform.parent = child;
+        }
+    }
+// če so vse trase prazne (brez ploščice) vrne true
     bool checkforempty()
     {
         foreach (Transform child in transform)
