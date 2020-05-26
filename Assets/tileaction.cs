@@ -35,7 +35,7 @@ public class tileaction : MonoBehaviour
             i++;
         }
     }
-
+// ko kliknemo spremeni barvo, doda točko, sound
     void OnMouseOver()
     {
 

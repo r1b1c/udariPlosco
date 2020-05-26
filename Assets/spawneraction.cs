@@ -25,11 +25,13 @@ public class spawneraction : MonoBehaviour
         Transform position = freeposition();
         float rand = UnityEngine.Random.Range(min, max);
         Vector3 offset = new Vector3(0, rand, 0);
+        // čefreepostion vrne traso kreiramo novo kopijo ploščice
         if (position)
         {
             GameObject piano = Instantiate(pianotile, position.transform.position + offset, Quaternion.identity);
             piano.transform.parent = position;
         }
+        //če nam freeposition() vrne not null kličemo funkcijo čez nek čas(delay)
         if (freeposition())
         {
             Invoke("spawnuntill", delay);
@@ -59,7 +61,7 @@ public class spawneraction : MonoBehaviour
         //Gremo skozi vse otroke spawnerja (trase)
         foreach(Transform child in transform)
         {
-          // kopiramo instanco pianotile (ploščica) in ji dao isti položaj kot je njena trasa brez sprememb v rotaciiji
+          // kopiramo instanco pianotile (ploščica) in ji da isti položaj kot je njena trasa brez sprememb v rotaciiji
             GameObject piano = Instantiate(pianotile, child.position, Quaternion.identity);
           // hierarhično vstavimo kot starša traso ki smo jo ustvarili v position script
             piano.transform.parent = child;
@@ -78,7 +80,7 @@ public class spawneraction : MonoBehaviour
         return true;
 
     }
-
+// vrne prvo traso ki je prazna ali pa null
     Transform freeposition()
     {
         foreach (Transform child in transform)
