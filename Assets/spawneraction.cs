@@ -50,7 +50,7 @@ public class spawneraction : MonoBehaviour
       //ko so vse trase brez ploščic kreiramo novo
         if (checkforempty())
         {
-            spawnuotill();
+            spawnuntill();
         }
     }
 
