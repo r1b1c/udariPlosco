@@ -24,6 +24,7 @@ public class spawneraction : MonoBehaviour
     {
         Transform position = freeposition();
         float rand = UnityEngine.Random.Range(min, max);
+        //Vector3(x,y,z) zato se nama spawna na random pozicijah
         Vector3 offset = new Vector3(0, rand, 0);
         // čefreepostion vrne traso kreiramo novo kopijo ploščice
         if (position)
@@ -80,7 +81,7 @@ public class spawneraction : MonoBehaviour
         return true;
 
     }
-// vrne prvo traso ki je prazna ali pa null
+// vrne prvo traso ki je prazna ali pa null če nobena ni prazna
     Transform freeposition()
     {
         foreach (Transform child in transform)
