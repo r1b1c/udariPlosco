@@ -1,17 +1,7 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
-<<<<<<< HEAD
 guid: 6c4d2ed1bfe20ae4699dd234a0e6d271
-=======
-guid: 27fe6542a720f7b4cadd93a7c981a560
 labels:
 - gpsr
->>>>>>> 02e1436be2a3c8336c11af522eb2daa8301f897b
-=======
-guid: 27fe6542a720f7b4cadd93a7c981a560
-labels:
-- gpsr
->>>>>>> 02e1436be2a3c8336c11af522eb2daa8301f897b
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
