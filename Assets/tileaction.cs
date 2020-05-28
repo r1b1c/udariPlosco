@@ -35,7 +35,7 @@ public class tileaction : MonoBehaviour
             i++;
         }
     }
-
+// ko kliknemo spremeni barvo, doda točko, sound
     void OnMouseOver()
     {
 
@@ -62,9 +62,10 @@ public class tileaction : MonoBehaviour
             UnityEngine.Debug.Log("ok");
 
         }
+        // ob dotiku borderja odpri rezultat
         else if(col.collider.tag == "border")
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 
         }
 
