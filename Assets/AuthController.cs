@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 public class AuthController : MonoBehaviour {
 
-    public Text emailInput, passwordInput;
+    public Text emailInput, passwordInput;  
 
     public void Login()
     {
