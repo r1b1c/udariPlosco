@@ -6,17 +6,24 @@ using UnityEngine.UI;
 
 public class MuteManager : MonoBehaviour
 {
+    public Image ozadje;
     public Button muteB;
-    private Sprite tema1;
-    private Sprite tema2;
-    private Sprite tema3;
+    public Sprite TemaSprite1;
+    public Sprite TemaSprite2;
+    public Sprite TemaSprite3;
     public Sprite mutedPicture;
     public Sprite unmutedPicture;
+    public Toggle toggle1;
+    public Toggle toggle2;
+    public Toggle toggle3;
+
+    
     private bool isMuted;
     // Start is called before the first frame update
     void Start()
     {
         CheckStatus();
+        changeTheme();
 
     }
     //ob kliku gumba se kliče ta metoda
@@ -45,10 +52,46 @@ public class MuteManager : MonoBehaviour
             muteB.image.sprite = unmutedPicture;
         }
         AudioListener.pause = isMuted;
-        
-        
+    }
+    //pred začetkom nastavi primerno temo
+    private void changeTheme()
+    {
+        int i = PlayerPrefs.GetInt("tema");
+        if (i==1)
+        {
+            ozadje.sprite =TemaSprite1;
+            toggle1.isOn = true;
+
+        } else if (i==2)
+        {
+            ozadje.sprite = TemaSprite2;
+            toggle2.isOn = true;
+        }else if (i == 3)
+        {
+            ozadje.sprite = TemaSprite3;
+            toggle3.isOn = true;
+        }
     }
     
+    // nastavi in spremeni temo za celotno aplikacijo
+    public void ChangeToTheme1()
+    {
+        ozadje.sprite = TemaSprite1;
+        PlayerPrefs.SetInt("tema",1);
+        
+    }
+    public void ChangeToTheme2()
+    {
+        ozadje.sprite = TemaSprite2;
+        PlayerPrefs.SetInt("tema",2);
+        
+    }
+    public void ChangeToTheme3()
+    {
+        ozadje.sprite = TemaSprite3;
+        PlayerPrefs.SetInt("tema",3);
+        
+    }
     // Update is called once per frame
     void Update()
     {
