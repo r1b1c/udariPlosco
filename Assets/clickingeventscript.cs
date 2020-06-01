@@ -33,4 +33,8 @@ public class clickingeventscript : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
+    public void settings()
+    {
+        SceneManager.LoadScene("Nastavitve");
+    }
 }

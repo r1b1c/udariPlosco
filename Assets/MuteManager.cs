@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -36,6 +37,11 @@ public class MuteManager : MonoBehaviour
         // da ostane shranjeno za naslednjo sekcijo
         PlayerPrefs.SetInt("Muted",isMuted ? 1:0);
         
+    }
+
+    public void BackPressed()
+    {
+        SceneManager.LoadScene("start");
     }
 
     // preveri če je v prefernces natavljeno muted or unmuted
