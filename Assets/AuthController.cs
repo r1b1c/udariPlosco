@@ -6,15 +6,23 @@ using Firebase.Auth;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using UnityEngine.SceneManagement;
+using System.CodeDom;
+using Firebase.Extensions;
 
 public class AuthController : MonoBehaviour {
 
-    public Text emailInput, passwordInput;  
+    public Text emailInput, passwordInput;
+    public int test = 0; 
+
+    private void vpis()
+    {
+        SceneManager.LoadScene("start");
+    }
 
     public void Login()
     {
         FirebaseAuth.DefaultInstance.SignInWithEmailAndPasswordAsync(emailInput.text,
-                passwordInput.text).ContinueWith(( task=>
+                passwordInput.text).ContinueWithOnMainThread(( task=>
                 {
                     //prekinjen
                     if (task.IsCanceled)
@@ -23,7 +31,7 @@ public class AuthController : MonoBehaviour {
                         task.Exception.Flatten().InnerExceptions[0] as Firebase.FirebaseException;
 
                         GetErrorMessage((AuthError)e.ErrorCode);
-
+                        test = 0;
                         return;
                     }
 
@@ -35,15 +43,17 @@ public class AuthController : MonoBehaviour {
                         task.Exception.Flatten().InnerExceptions[0] as Firebase.FirebaseException;
 
                         GetErrorMessage((AuthError)e.ErrorCode);
-
+                        test = 0;
                         return;
 
                     }
                     //uspešen
                     if (task.IsCompleted)
                     {
+
                         print("Prijava uspešna!");
-                        SceneManager.LoadScene(0);
+                        SceneManager.LoadScene("start");
+
                     }
 
 
@@ -56,39 +66,7 @@ public class AuthController : MonoBehaviour {
 
     public void Login_Anonymus()
     {
-        FirebaseAuth.DefaultInstance.SignInAnonymouslyAsync().
-            ContinueWith((task =>
-           {
-               //prekinjen
-               if (task.IsCanceled)
-               {
-                   Firebase.FirebaseException e =
-                   task.Exception.Flatten().InnerExceptions[0] as Firebase.FirebaseException;
-
-                   GetErrorMessage((AuthError)e.ErrorCode);
-
-                   return;
-               }
-
-               //ce se je pojavila kaka napaka
-               if (task.IsFaulted)
-               {
-
-                   Firebase.FirebaseException e =
-                   task.Exception.Flatten().InnerExceptions[0] as Firebase.FirebaseException;
-
-                   GetErrorMessage((AuthError)e.ErrorCode);
-
-                   return;
-
-               }
-               //uspešen
-               if (task.IsCompleted)
-               {
-                   print("Prijavljeni ste kot gost!");
-               }
-
-           }));
+        SceneManager.LoadScene("start");
     }
 
     public void RegisterUser()

@@ -18,9 +18,9 @@ public class clickingeventscript : MonoBehaviour
         Application.Quit();
     }
 
-    public void aboutus()
+    public void izpis()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene("ZacetnaStran");
     }
 
     public void mainmenu()

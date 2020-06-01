@@ -514,7 +514,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1810026432}
-        m_MethodName: aboutus
+        m_MethodName: izpis
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1319,7 +1319,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: About us
+  m_Text: Izpis
 --- !u!222 &1947466035
 CanvasRenderer:
   m_ObjectHideFlags: 0
