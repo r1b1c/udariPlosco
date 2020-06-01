@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/endingScene.unity
     guid: afcff25dea3c16541ac7d191db4b7431
+  - enabled: 1
+    path: Assets/Scenes/ZacetnaStran.unity
+    guid: 043839b61b6e9ff4889f0b61aa2fc1ba
   m_configObjects: {}
