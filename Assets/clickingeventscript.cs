@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-
+using Firebase.Auth;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,6 +20,9 @@ public class clickingeventscript : MonoBehaviour
 
     public void izpis()
     {
+        FirebaseAuth.DefaultInstance.SignOut();
+        print("Odjava uspešna!");
+        
         SceneManager.LoadScene("ZacetnaStran");
     }
 

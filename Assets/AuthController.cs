@@ -12,12 +12,8 @@ using Firebase.Extensions;
 public class AuthController : MonoBehaviour {
 
     public Text emailInput, passwordInput;
-    public int test = 0; 
 
-    private void vpis()
-    {
-        SceneManager.LoadScene("start");
-    }
+
 
     public void Login()
     {
@@ -31,7 +27,7 @@ public class AuthController : MonoBehaviour {
                         task.Exception.Flatten().InnerExceptions[0] as Firebase.FirebaseException;
 
                         GetErrorMessage((AuthError)e.ErrorCode);
-                        test = 0;
+
                         return;
                     }
 
@@ -43,7 +39,7 @@ public class AuthController : MonoBehaviour {
                         task.Exception.Flatten().InnerExceptions[0] as Firebase.FirebaseException;
 
                         GetErrorMessage((AuthError)e.ErrorCode);
-                        test = 0;
+
                         return;
 
                     }
@@ -55,8 +51,6 @@ public class AuthController : MonoBehaviour {
                         SceneManager.LoadScene("start");
 
                     }
-
-
 
 
                 }));
@@ -72,7 +66,7 @@ public class AuthController : MonoBehaviour {
     public void RegisterUser()
     {
         FirebaseAuth.DefaultInstance.CreateUserWithEmailAndPasswordAsync(emailInput.text,
-            passwordInput.text).ContinueWith((task =>
+            passwordInput.text).ContinueWithOnMainThread((task =>
             {
                 if(emailInput.text.Equals("") && passwordInput.text.Equals(""))
                 {
@@ -113,6 +107,7 @@ public class AuthController : MonoBehaviour {
             }));
     }
 
+    
     public void Logout()
     {
         if(FirebaseAuth.DefaultInstance.CurrentUser != null)
@@ -127,21 +122,24 @@ public class AuthController : MonoBehaviour {
         string msg = "";
         msg = errorCode.ToString();
 
-/*
+
         //napake in izpis
         switch (errorCode)
         {
             case AuthError.AccountExistsWithDifferentCredentials:
                 break;
             case AuthError.MissingPassword:
+                    print("Vpišite geslo");
                 break;
             case AuthError.WrongPassword:
+                    print("Napačno geslo!");
                 break;
             case AuthError.InvalidEmail:
+                    print("Nepravilen email!");
                 break;
         }
 
-*/
+
         print(msg);
     }
 
