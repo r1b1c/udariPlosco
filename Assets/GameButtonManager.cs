@@ -38,7 +38,7 @@ public class GameButtonManager : MonoBehaviour
     {
         if (PressedPause)
             Time.timeScale = 1;
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 }

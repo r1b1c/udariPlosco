@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Nastavitve.unity
     guid: 07858ecb7499a1246833e39eac2be4d1
+  - enabled: 1
+    path: Assets/Scenes/testnaIgra.unity
+    guid: 00620a2585a513c48872af104765fd30
   m_configObjects: {}

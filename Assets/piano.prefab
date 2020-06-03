@@ -146,6 +146,6 @@ MonoBehaviour:
   color: {fileID: 1748428999302410430}
   scorevalue: 1
   rb: {fileID: 0}
-  speed: 1200
+  speed: 200
   score: 0
   touchsound: {fileID: 8300000, guid: f6b85a5cd31a79645afbd4fdea87b860, type: 3}

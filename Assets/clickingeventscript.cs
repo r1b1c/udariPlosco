@@ -10,7 +10,8 @@ public class clickingeventscript : MonoBehaviour
     //Kaj se zgodi ob kliku na kateri gumb
     public void startbutton()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+      SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+     // SceneManager.LoadScene("testnaIgra");
     }
 
     public void Quitbutton()
