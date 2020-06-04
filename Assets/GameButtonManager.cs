@@ -6,16 +6,20 @@ using UnityEngine.SceneManagement;
 public class GameButtonManager : MonoBehaviour
 {
     private bool PressedPause;
+
+    public GameObject panel;
     // Start is called before the first frame update
     void Start()
     {
+        panel.transform.SetAsLastSibling();
         PressedPause = false;
+        panel.SetActive(false);
     }
     
     public void BackPressed()
     {
         //if potreben da damo stanje nazaj
-        if (PressedPause)
+        if (PressedPause){}
             Time.timeScale = 1;
         SceneManager.LoadScene("start");
     }
@@ -24,13 +28,17 @@ public class GameButtonManager : MonoBehaviour
     {
         PressedPause = !PressedPause;
         if (PressedPause)
+        {
             Time.timeScale = PressedPause ? 0 : 1;
+            panel.SetActive(true);
+        }
         else
             StartCoroutine(WaitCoroutine());
     }
     //korutina, ki čaka 1 s ko odpavziramo
     IEnumerator WaitCoroutine()
     {
+        panel.SetActive(false);
         yield return new WaitForSecondsRealtime(1);
         Time.timeScale = PressedPause ? 0 : 1;
     }
