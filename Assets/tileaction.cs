@@ -65,7 +65,7 @@ public class tileaction : MonoBehaviour
         // ob dotiku borderja odpri rezultat
         else if(col.collider.tag == "border")
         {
-        //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+           SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 
         }
 
