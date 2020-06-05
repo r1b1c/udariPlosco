@@ -4,7 +4,7 @@ using UnityEngine;
 using Firebase;
 using Firebase.Unity.Editor;
 
-
+/*
 public class ResoltManageScript : MonoBehaviour
 {
     private Firbase
@@ -15,3 +15,4 @@ public class ResoltManageScript : MonoBehaviour
         
     }
 }
+*/
