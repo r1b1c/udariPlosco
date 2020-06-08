@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using UnityEngine.SceneManagement;
 using System.CodeDom;
+using Firebase.Database;
 using Firebase.Extensions;
 
 public class AuthController : MonoBehaviour {
