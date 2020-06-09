@@ -5,6 +5,7 @@ using UnityEngine;
 using Firebase;
 using Firebase.Database;
 using Firebase.Unity.Editor;
+using Object = System.Object;
 
 
 public class ResoltManageScript : MonoBehaviour
@@ -25,21 +26,11 @@ public class ResoltManageScript : MonoBehaviour
         //fake objekt todo static objekt Player ki se nastavi ob prijavi, odstrani ob odjavi (mogoče v playerpref bool IsSigned=true/false) 
         data=new Player("t.v@g.com","QmiTV4E3LuWUPe2xGf4UMO1kRWF3",new []{10,9,8,7,5,6,4,3,2,1});
         
-        
-            SaveData();
         //LoadData();
+       // WriteNewScore("HnriL2JelbhcHXQObqDlHnJhPt62",56);
+       LoadLeaderBoard();
     }
-
-    private void SaveData()
-    { 
-        string jsonData = JsonUtility.ToJson(data);
-        Debug.Log(jsonData);
-       ScoreBoard sb=new ScoreBoard();
-      // _databaseReference.Child("scoreBoard").SetValueAsync(JsonUtility.ToJson(sb)); 
-        //_databaseReference.Child(data.id).SetValueAsync(jsonData);
-        Debug.Log("data saved 2"+data.email);
-    }
-
+    
     public void LoadData()
     {
         FirebaseDatabase.DefaultInstance.GetReference(data.id)
@@ -62,32 +53,79 @@ public class ResoltManageScript : MonoBehaviour
                 }
             });
     }
-}
 
-[Serializable]
-internal class ScoreBoard
-{
-    public int [] top100=new int[100];
-
-    public ScoreBoard()
+    private void LoadLeaderBoard()
     {
+        //vrnenajvečje 4ri rezultate ki pa niso vrnjeni sortirano!
+        FirebaseDatabase.DefaultInstance.GetReference("scores").OrderByChild("score").LimitToLast(4).GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.Log("error se je pojavil");
+                //todo če ni interneta se izpiše lokalni rezultati iz playerpref
+            } else if (task.IsCompleted)
+            {
+               
+                DataSnapshot snapshot = task.Result;
+                // v returnedDictonery imamo Vrnjen Dictonery<key(identifyer od vnosa),<Dictonery<string(ime "uid"ali"score"),Object(rezultat uid ali uid)>>
+                Dictionary<string, Object> returnedDictonery = (Dictionary<string, Object>) snapshot.Value;
+                
+                
+                foreach (KeyValuePair<string, Object> item in returnedDictonery)
+                {
+                    
+                    Debug.Log("score:"+((Dictionary<string,Object>)item.Value)["score"]+"  uid:"+((Dictionary<string,Object>)item.Value)["uid"]);
+                   
+                  //Debug.Log("tip je "+((Dictionary<string,Object>)item.Value)["uid"].GetType());
+                }
+
+               
+                Debug.Log("uspešno smo vrnili podatke ");
+                
+
+            } else if (task.IsCanceled)
+            {
+                //todo če ni interneta se izpiše lokalno iz playerpref
+                Debug.Log("klicanje je bilo preklicano");
+            }
+        } );
+    }
+    private void WriteNewScore(string userId, int score) {
+        // Create new entry at /user-scores/$userid/$scoreid and at
+        // /leaderboard/$scoreid simultaneously
+        // spodnja vrstica ustvaru nov ključ ki ga uporabi za shranjevanje tako v score in user-score
+        string key = _databaseReference.Child("scores").Push().Key;
+        
+        LeaderboardEntry entry = new LeaderboardEntry(userId, score);
+        Dictionary<string, Object> entryValues = entry.ToDictionary();
+        //ustvari Dictonery childUpdates, da lahko shrani dve stvari na enkrat
+        Dictionary<string, Object> childUpdates = new Dictionary<string, Object>();
+        childUpdates["/scores/" + key] = entryValues;
+        // ko shrani v user score, kjer ma vsak posebaj svoje score po user-score doda userid pod katerim ima igralec svoje rezultate
+        childUpdates["/user-scores/" + userId + "/" + key] = entryValues;
+
+        _databaseReference.UpdateChildrenAsync(childUpdates);
     }
 }
-[Serializable]
-internal class ScoreClassForBoard
-{
-    public string id;
-    public int score;
 
-    public ScoreClassForBoard()
-    {
-        this.id = "neobstaja";
-        score = 0;
+
+internal class LeaderboardEntry {
+    public string uid;
+    public int score = 0;
+
+    public LeaderboardEntry() {
     }
 
-    public ScoreClassForBoard(string id, int score)
-    {
-        this.id = id;
+    public LeaderboardEntry(string uid, int score) {
+        this.uid = uid;
         this.score = score;
+    }
+
+    public Dictionary<string, Object> ToDictionary() {
+        Dictionary<string, Object> result = new Dictionary<string, Object>();
+        result["uid"] = uid;
+        result["score"] = score;
+
+        return result;
     }
 }
