@@ -67,19 +67,30 @@ public class ResoltManageScript : MonoBehaviour
             {
                
                 DataSnapshot snapshot = task.Result;
+                
                 // v returnedDictonery imamo Vrnjen Dictonery<key(identifyer od vnosa),<Dictonery<string(ime "uid"ali"score"),Object(rezultat uid ali uid)>>
                 Dictionary<string, Object> returnedDictonery = (Dictionary<string, Object>) snapshot.Value;
-                
-                
+                List<LeaderboardEntry> listOfLeaderboard=new List<LeaderboardEntry>();
+                long returnedScore;
+                Object returnedObjectScore;
+                string returnedId;
+                Object returnedIdObject;
+                Debug.Log("what's going on");
                 foreach (KeyValuePair<string, Object> item in returnedDictonery)
                 {
-                    
-                    Debug.Log("score:"+((Dictionary<string,Object>)item.Value)["score"]+"  uid:"+((Dictionary<string,Object>)item.Value)["uid"]);
+                    returnedObjectScore =((Dictionary<string, Object>) item.Value)["score"];
+                    returnedIdObject=((Dictionary<string,Object>)item.Value)["uid"];
+                    returnedId = (string) returnedIdObject;
+                    returnedScore =(long)returnedObjectScore;
                    
-                  //Debug.Log("tip je "+((Dictionary<string,Object>)item.Value)["uid"].GetType());
+                   // Debug.Log("prvi izpis score:"+returnedScore+"  uid:"+returnedId);
+                     listOfLeaderboard.Add(new LeaderboardEntry(returnedId,(int)returnedScore));
                 }
-
-               
+                IntListQuickSort(listOfLeaderboard);
+                foreach (var VARIABLE in listOfLeaderboard)
+                {
+                    Debug.Log("izpis lista score:"+VARIABLE.score+"  uid:"+VARIABLE.uid);
+                }
                 Debug.Log("uspešno smo vrnili podatke ");
                 
 
@@ -106,10 +117,52 @@ public class ResoltManageScript : MonoBehaviour
 
         _databaseReference.UpdateChildrenAsync(childUpdates);
     }
+
+    public static void IntListQuickSort (List<LeaderboardEntry> data, int l, int r)
+    {
+        int i, j;
+        int x;
+ 
+        i = l;
+        j = r;
+        
+        x = data [(l + r) / 2].score; /* find pivot item */
+        
+        while (true) {
+            while (data[i].score > x)
+                i++;
+            while (x > data[j].score)
+                j--;
+            if (i <= j) {
+                exchange (data, i, j);
+                i++;
+                j--;
+            }
+            if (i > j)
+                break;
+        }
+        if (l < j)
+            IntListQuickSort (data, l, j);
+        if (i < r)
+            IntListQuickSort (data, i, r);
+    }
+
+    public static void IntListQuickSort (List<LeaderboardEntry> data)
+    {
+        IntListQuickSort (data, 0, data.Count - 1);
+    }
+    public static void exchange (List<LeaderboardEntry> data, int m, int n)
+    {
+        LeaderboardEntry temporary;
+
+        temporary = data[m];
+        data [m] = data [n];
+        data [n] = temporary;
+    }
 }
 
 
-internal class LeaderboardEntry {
+public class LeaderboardEntry {
     public string uid;
     public int score = 0;
 
@@ -128,4 +181,6 @@ internal class LeaderboardEntry {
 
         return result;
     }
+
+   
 }
