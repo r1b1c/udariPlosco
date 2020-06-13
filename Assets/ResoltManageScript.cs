@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq.Expressions;
 using UnityEngine;
 using Firebase;
 using Firebase.Database;
+using Firebase.Extensions;
 using Firebase.Unity.Editor;
+using TMPro;
+using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 using Object = System.Object;
 
 
@@ -14,9 +20,10 @@ public class ResoltManageScript : MonoBehaviour
     private int scorepoints = score.scorepoints;
     private DatabaseReference _databaseReference;
     private string dataUrl="https://udariploscodb.firebaseio.com/";
+    private List<LeaderboardEntry> listTop5=null;
     
     // Start is called before the first frame update
-    void Start()
+     void Start()
     {
         Debug.Log("data saving 1");
 
@@ -24,17 +31,22 @@ public class ResoltManageScript : MonoBehaviour
         _databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
         
         //fake objekt todo static objekt Player ki se nastavi ob prijavi, odstrani ob odjavi (mogoče v playerpref bool IsSigned=true/false) 
-        data=new Player("t.v@g.com","QmiTV4E3LuWUPe2xGf4UMO1kRWF3",new []{10,9,8,7,5,6,4,3,2,1});
+        data=new Player("t.v@g.com","QmiTV4E3LuWUPe2xGf4UMO1kRWF3","cevap9");
         
         //LoadData();
        // WriteNewScore("HnriL2JelbhcHXQObqDlHnJhPt62",56);
-       LoadLeaderBoard();
+       RetriveLeaderBoard();
+        
+       Debug.Log("kaj zaj prej");
+      
+      
+        
     }
     
     public void LoadData()
     {
         FirebaseDatabase.DefaultInstance.GetReference(data.id)
-            .GetValueAsync().ContinueWith(task =>
+            .GetValueAsync().ContinueWithOnMainThread(task =>
             {
                 if (task.IsFaulted)
                 {
@@ -53,17 +65,20 @@ public class ResoltManageScript : MonoBehaviour
                 }
             });
     }
-
-    private void LoadLeaderBoard()
+    private async  void RetriveLeaderBoard()
     {
         //vrnenajvečje 4ri rezultate ki pa niso vrnjeni sortirano!
-        FirebaseDatabase.DefaultInstance.GetReference("scores").OrderByChild("score").LimitToLast(4).GetValueAsync().ContinueWith(task =>
+       await FirebaseDatabase.DefaultInstance.GetReference("scores").OrderByChild("score").LimitToLast(5).GetValueAsync().ContinueWithOnMainThread(task =>
         {
             if (task.IsFaulted)
             {
                 Debug.Log("error se je pojavil");
                 //todo če ni interneta se izpiše lokalni rezultati iz playerpref
-            } else if (task.IsCompleted)
+            } else if (task.IsCanceled)
+            {
+                //todo če ni interneta se izpiše lokalno iz playerpref
+                Debug.Log("klicanje je bilo preklicano");
+            }else if (task.IsCompleted)
             {
                
                 DataSnapshot snapshot = task.Result;
@@ -75,31 +90,37 @@ public class ResoltManageScript : MonoBehaviour
                 Object returnedObjectScore;
                 string returnedId;
                 Object returnedIdObject;
-                Debug.Log("what's going on");
                 foreach (KeyValuePair<string, Object> item in returnedDictonery)
                 {
                     returnedObjectScore =((Dictionary<string, Object>) item.Value)["score"];
                     returnedIdObject=((Dictionary<string,Object>)item.Value)["uid"];
                     returnedId = (string) returnedIdObject;
                     returnedScore =(long)returnedObjectScore;
-                   
-                   // Debug.Log("prvi izpis score:"+returnedScore+"  uid:"+returnedId);
-                     listOfLeaderboard.Add(new LeaderboardEntry(returnedId,(int)returnedScore));
+                    listOfLeaderboard.Add(new LeaderboardEntry(returnedId,(int)returnedScore));
                 }
                 IntListQuickSort(listOfLeaderboard);
-                foreach (var VARIABLE in listOfLeaderboard)
-                {
-                    Debug.Log("izpis lista score:"+VARIABLE.score+"  uid:"+VARIABLE.uid);
-                }
-                Debug.Log("uspešno smo vrnili podatke ");
-                
-
-            } else if (task.IsCanceled)
-            {
-                //todo če ni interneta se izpiše lokalno iz playerpref
-                Debug.Log("klicanje je bilo preklicano");
-            }
+                listTop5 = listOfLeaderboard;
+            } 
         } );
+       string name;
+       string score;
+       for (int i = 1; i < 6; i++)
+       {
+           name = "Name" + i;
+           score = "Score" + i;
+           Debug.Log(score);
+           TextMeshProUGUI tScore=transform.Find(score).GetComponent<TextMeshProUGUI>();
+           TextMeshProUGUI tName=transform.Find(name).GetComponent<TextMeshProUGUI>();
+                
+           if (tName!=null && tScore!=null)
+           {
+                tName.text = listTop5[i-1].score.ToString(); // namesto scora izpiši PLayerusername
+               tScore.text = listTop5[i-1].score.ToString();
+              
+               Debug.Log("ni nič");
+           }
+       }
+       Debug.Log("kaj zaj");
     }
     private void WriteNewScore(string userId, int score) {
         // Create new entry at /user-scores/$userid/$scoreid and at
@@ -114,11 +135,13 @@ public class ResoltManageScript : MonoBehaviour
         childUpdates["/scores/" + key] = entryValues;
         // ko shrani v user score, kjer ma vsak posebaj svoje score po user-score doda userid pod katerim ima igralec svoje rezultate
         childUpdates["/user-scores/" + userId + "/" + key] = entryValues;
+        //shranjevanje v username, da lahko na vnosu preveri kakšen username ima
+        childUpdates["/username/"] = entryValues;
 
         _databaseReference.UpdateChildrenAsync(childUpdates);
     }
 
-    public static void IntListQuickSort (List<LeaderboardEntry> data, int l, int r)
+    private static void IntListQuickSort (List<LeaderboardEntry> data, int l, int r)
     {
         int i, j;
         int x;
@@ -147,11 +170,12 @@ public class ResoltManageScript : MonoBehaviour
             IntListQuickSort (data, i, r);
     }
 
-    public static void IntListQuickSort (List<LeaderboardEntry> data)
+    private static void IntListQuickSort (List<LeaderboardEntry> data)
     {
         IntListQuickSort (data, 0, data.Count - 1);
     }
-    public static void exchange (List<LeaderboardEntry> data, int m, int n)
+
+    private static void exchange (List<LeaderboardEntry> data, int m, int n)
     {
         LeaderboardEntry temporary;
 
@@ -164,16 +188,14 @@ public class ResoltManageScript : MonoBehaviour
 
 public class LeaderboardEntry {
     public string uid;
+    public string username;
     public int score = 0;
-
     public LeaderboardEntry() {
     }
-
     public LeaderboardEntry(string uid, int score) {
         this.uid = uid;
         this.score = score;
     }
-
     public Dictionary<string, Object> ToDictionary() {
         Dictionary<string, Object> result = new Dictionary<string, Object>();
         result["uid"] = uid;
@@ -181,6 +203,4 @@ public class LeaderboardEntry {
 
         return result;
     }
-
-   
 }

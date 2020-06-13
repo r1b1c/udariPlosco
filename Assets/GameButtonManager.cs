@@ -11,7 +11,6 @@ public class GameButtonManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        panel.transform.SetAsLastSibling();
         PressedPause = false;
         panel.SetActive(false);
     }

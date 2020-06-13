@@ -8,17 +8,18 @@ public class Player
 {
   public string email;
   public string id;
-  public int[] bestScores=new int[10];
+  public string username;
 
   public Player()
   {
   }
 
-  public Player(string email, string id,int [] score)
+  public Player(string email, string id,string username)
   {
     this.email = email;
     this.id = id;
-    bestScores = score;
+    this.username = username;
+
 
   }
   public Player(string email, string id)
