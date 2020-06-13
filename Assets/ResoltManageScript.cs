@@ -26,6 +26,7 @@ public class ResoltManageScript : MonoBehaviour
      void Start()
     {
         Debug.Log("data saving 1");
+        Debug.Log("data saving lool");
 
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl(dataUrl);
         _databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
@@ -34,10 +35,12 @@ public class ResoltManageScript : MonoBehaviour
         data=new Player("t.v@g.com","QmiTV4E3LuWUPe2xGf4UMO1kRWF3","cevap9");
         
         //LoadData();
-       // WriteNewScore("HnriL2JelbhcHXQObqDlHnJhPt62",56);
-       RetriveLeaderBoard();
+       //WriteNewScore("HnriL2JelbhcHXQObqDlHnJhPt62",13,"cevap9");
+     //  WriteNewScore("0IR96IFxotQthr70IZJKgiuzUG32",15,"jozek1996");
+
+      RetriveLeaderBoard();
         
-       Debug.Log("kaj zaj prej");
+      // Debug.Log("kaj zaj prej");
       
       
         
@@ -90,13 +93,17 @@ public class ResoltManageScript : MonoBehaviour
                 Object returnedObjectScore;
                 string returnedId;
                 Object returnedIdObject;
+                string returnedUsername;
+                Object returnedUsernameObject;
                 foreach (KeyValuePair<string, Object> item in returnedDictonery)
                 {
                     returnedObjectScore =((Dictionary<string, Object>) item.Value)["score"];
                     returnedIdObject=((Dictionary<string,Object>)item.Value)["uid"];
+                    returnedUsernameObject = ((Dictionary<string, Object>) item.Value)["username"];
                     returnedId = (string) returnedIdObject;
                     returnedScore =(long)returnedObjectScore;
-                    listOfLeaderboard.Add(new LeaderboardEntry(returnedId,(int)returnedScore));
+                    returnedUsername = (string) returnedUsernameObject;
+                    listOfLeaderboard.Add(new LeaderboardEntry(returnedId,(int)returnedScore,returnedUsername));
                 }
                 IntListQuickSort(listOfLeaderboard);
                 listTop5 = listOfLeaderboard;
@@ -114,7 +121,7 @@ public class ResoltManageScript : MonoBehaviour
                 
            if (tName!=null && tScore!=null)
            {
-                tName.text = listTop5[i-1].score.ToString(); // namesto scora izpiši PLayerusername
+                tName.text = listTop5[i-1].username; // namesto scora izpiši PLayerusername
                tScore.text = listTop5[i-1].score.ToString();
               
                Debug.Log("ni nič");
@@ -122,21 +129,20 @@ public class ResoltManageScript : MonoBehaviour
        }
        Debug.Log("kaj zaj");
     }
-    private void WriteNewScore(string userId, int score) {
+    private void WriteNewScore(string userId, int score,string username) {
         // Create new entry at /user-scores/$userid/$scoreid and at
         // /leaderboard/$scoreid simultaneously
         // spodnja vrstica ustvaru nov ključ ki ga uporabi za shranjevanje tako v score in user-score
         string key = _databaseReference.Child("scores").Push().Key;
         
-        LeaderboardEntry entry = new LeaderboardEntry(userId, score);
+        LeaderboardEntry entry = new LeaderboardEntry(userId, score,username);
         Dictionary<string, Object> entryValues = entry.ToDictionary();
         //ustvari Dictonery childUpdates, da lahko shrani dve stvari na enkrat
         Dictionary<string, Object> childUpdates = new Dictionary<string, Object>();
         childUpdates["/scores/" + key] = entryValues;
         // ko shrani v user score, kjer ma vsak posebaj svoje score po user-score doda userid pod katerim ima igralec svoje rezultate
         childUpdates["/user-scores/" + userId + "/" + key] = entryValues;
-        //shranjevanje v username, da lahko na vnosu preveri kakšen username ima
-        childUpdates["/username/"] = entryValues;
+        
 
         _databaseReference.UpdateChildrenAsync(childUpdates);
     }
@@ -192,14 +198,16 @@ public class LeaderboardEntry {
     public int score = 0;
     public LeaderboardEntry() {
     }
-    public LeaderboardEntry(string uid, int score) {
+    public LeaderboardEntry(string uid, int score,string username) {
         this.uid = uid;
+        this.username = username;
         this.score = score;
     }
     public Dictionary<string, Object> ToDictionary() {
         Dictionary<string, Object> result = new Dictionary<string, Object>();
         result["uid"] = uid;
         result["score"] = score;
+        result["username"] = username;
 
         return result;
     }
