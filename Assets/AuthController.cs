@@ -13,8 +13,8 @@ using Firebase.Extensions;
 public class AuthController : MonoBehaviour {
 
     public Text emailInput, passwordInput;
-
-
+    public static Player aktualni=null;
+    
 
     public void Login()
     {
@@ -47,6 +47,9 @@ public class AuthController : MonoBehaviour {
                     //uspešen
                     if (task.IsCompleted)
                     {
+                        string userid=task.Result.UserId;
+                        // ustvari se nov player ki mu morama zaj skozi uid pogledat nickname
+                        aktualni=new Player(userid);
 
                         print("Prijava uspešna!");
                         SceneManager.LoadScene("start");
@@ -59,6 +62,10 @@ public class AuthController : MonoBehaviour {
 
     }
 
+    private void SaveCurrentUser()
+    {
+        
+    }
     public void Login_Anonymus()
     {
         SceneManager.LoadScene("start");

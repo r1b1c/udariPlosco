@@ -35,7 +35,7 @@ public class ResoltManageScript : MonoBehaviour
         data=new Player("t.v@g.com","QmiTV4E3LuWUPe2xGf4UMO1kRWF3","cevap9");
         
         //LoadData();
-       //WriteNewScore("HnriL2JelbhcHXQObqDlHnJhPt62",13,"cevap9");
+       WriteNewScore("HnriL2JelbhcHXQObqDlHnJhPt62",scorepoints, "cevap9");
      //  WriteNewScore("0IR96IFxotQthr70IZJKgiuzUG32",15,"jozek1996");
 
       RetriveLeaderBoard();
@@ -123,11 +123,8 @@ public class ResoltManageScript : MonoBehaviour
            {
                 tName.text = listTop5[i-1].username; // namesto scora izpiši PLayerusername
                tScore.text = listTop5[i-1].score.ToString();
-              
-               Debug.Log("ni nič");
            }
        }
-       Debug.Log("kaj zaj");
     }
     private void WriteNewScore(string userId, int score,string username) {
         // Create new entry at /user-scores/$userid/$scoreid and at

@@ -19,12 +19,14 @@ public class Player
     this.email = email;
     this.id = id;
     this.username = username;
-
-
   }
   public Player(string email, string id)
   {
     this.email = email;
+    this.id = id;
+  }
+  public Player( string id)
+  {
     this.id = id;
   }
   
