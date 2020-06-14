@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using UnityEngine;
 using Firebase;
+using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
 using Firebase.Unity.Editor;
@@ -16,37 +17,42 @@ using Object = System.Object;
 
 public class ResoltManageScript : MonoBehaviour
 {
-    private Player data;
+  
     private int scorepoints = score.scorepoints;
     private DatabaseReference _databaseReference;
     private string dataUrl="https://udariploscodb.firebaseio.com/";
     private List<LeaderboardEntry> listTop5=null;
+    private static Firebase.Auth.FirebaseAuth auth;
+    private Firebase.Auth.FirebaseUser user;
     
     // Start is called before the first frame update
      void Start()
     {
-        Debug.Log("data saving 1");
-        Debug.Log("data saving lool");
-
+        auth=FirebaseAuth.DefaultInstance;
+        user = auth.CurrentUser;
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl(dataUrl);
         _databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
-        
-        //fake objekt todo static objekt Player ki se nastavi ob prijavi, odstrani ob odjavi (mogoče v playerpref bool IsSigned=true/false) 
-        data=new Player("t.v@g.com","QmiTV4E3LuWUPe2xGf4UMO1kRWF3","cevap9");
-        
-        //LoadData();
-       WriteNewScore("HnriL2JelbhcHXQObqDlHnJhPt62",scorepoints, "cevap9");
-     //  WriteNewScore("0IR96IFxotQthr70IZJKgiuzUG32",15,"jozek1996");
-
-      RetriveLeaderBoard();
-        
-      // Debug.Log("kaj zaj prej");
+        //če imamo povezavo na bazo zapišemo rezultat in prikažemo leaderboard
+        if (_databaseReference != null)
+        {
+            if (user != null) {
+                string displayName = user.DisplayName;
+                string email = user.Email;
+                string userid = user.UserId;
+                WriteNewScore(userid,scorepoints, displayName);
+            }
+            RetriveLeaderBoard();
+        }
+        else
+        {
+            //izpiši da leaderboard ni na voljo
+        }
       
       
         
     }
     
-    public void LoadData()
+    public void LoadData(Player data)
     {
         FirebaseDatabase.DefaultInstance.GetReference(data.id)
             .GetValueAsync().ContinueWithOnMainThread(task =>
@@ -70,6 +76,7 @@ public class ResoltManageScript : MonoBehaviour
     }
     private async  void RetriveLeaderBoard()
     {
+        
         //vrnenajvečje 4ri rezultate ki pa niso vrnjeni sortirano!
        await FirebaseDatabase.DefaultInstance.GetReference("scores").OrderByChild("score").LimitToLast(5).GetValueAsync().ContinueWithOnMainThread(task =>
         {
@@ -115,7 +122,6 @@ public class ResoltManageScript : MonoBehaviour
        {
            name = "Name" + i;
            score = "Score" + i;
-           Debug.Log(score);
            TextMeshProUGUI tScore=transform.Find(score).GetComponent<TextMeshProUGUI>();
            TextMeshProUGUI tName=transform.Find(name).GetComponent<TextMeshProUGUI>();
                 
@@ -127,6 +133,9 @@ public class ResoltManageScript : MonoBehaviour
        }
     }
     private void WriteNewScore(string userId, int score,string username) {
+        //dobimo aktivnega playerja
+       
+        
         // Create new entry at /user-scores/$userid/$scoreid and at
         // /leaderboard/$scoreid simultaneously
         // spodnja vrstica ustvaru nov ključ ki ga uporabi za shranjevanje tako v score in user-score

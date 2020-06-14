@@ -47,9 +47,18 @@ public class AuthController : MonoBehaviour {
                     //uspešen
                     if (task.IsCompleted)
                     {
-                        string userid=task.Result.UserId;
-                        // ustvari se nov player ki mu morama zaj skozi uid pogledat nickname
-                        aktualni=new Player(userid);
+                        Firebase.Auth.FirebaseAuth auth=FirebaseAuth.DefaultInstance;
+                        Firebase.Auth.FirebaseUser user = auth.CurrentUser;
+                        if (user != null) {
+                            string name = user.DisplayName;
+                            string email = user.Email;
+                            // The user's Id, unique to the Firebase project.
+                            // Do NOT use this value to authenticate with your backend server, if you
+                            // have one; use User.TokenAsync() instead.
+                            string uid = user.UserId;
+                            Debug.Log(name+ " "+email +" "+uid);
+                        }
+                       
 
                         print("Prijava uspešna!");
                         SceneManager.LoadScene("start");
@@ -107,6 +116,34 @@ public class AuthController : MonoBehaviour {
                 //uspešen
                 if (task.IsCompleted)
                 {
+                    //dodan del za kreiranje username-a
+                    Firebase.Auth.FirebaseUser newUser = task.Result;
+                    if (newUser != null)
+                    {
+                        Firebase.Auth.UserProfile profile = new Firebase.Auth.UserProfile
+                        {
+                            //tu vstavi text od vnosa za username
+                            DisplayName = "Userček3000",
+
+                        };
+                        newUser.UpdateUserProfileAsync(profile).ContinueWith(task2 =>
+                        {
+                            if (task2.IsCanceled)
+                            {
+                                Debug.LogError("UpdateUserProfileAsync was canceled.");
+                                return;
+                            }
+
+                            if (task2.IsFaulted)
+                            {
+                                Debug.LogError("UpdateUserProfileAsync encountered an error: " + task2.Exception);
+                                return;
+                            }
+
+                            Debug.Log("User profile updated successfully.");
+                        });
+                    }
+
                     print("Registracija uspešna!");
                 }
 
