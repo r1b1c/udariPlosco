@@ -12,7 +12,7 @@ using Firebase.Extensions;
 
 public class AuthController : MonoBehaviour {
 
-    public Text emailInput, passwordInput;
+    public Text emailInput, passwordInput, username;
     public static Player aktualni=null;
     
 
@@ -123,7 +123,7 @@ public class AuthController : MonoBehaviour {
                         Firebase.Auth.UserProfile profile = new Firebase.Auth.UserProfile
                         {
                             //tu vstavi text od vnosa za username
-                            DisplayName = "Userček3000",
+                            DisplayName = username.text,
 
                         };
                         newUser.UpdateUserProfileAsync(profile).ContinueWith(task2 =>
@@ -145,6 +145,7 @@ public class AuthController : MonoBehaviour {
                     }
 
                     print("Registracija uspešna!");
+                    SceneManager.LoadScene("ZacetnaStran");
                 }
 
 
@@ -186,6 +187,11 @@ public class AuthController : MonoBehaviour {
 
 
         print(msg);
+    }
+
+    public void registracijaStran()
+    {
+        SceneManager.LoadScene("registracija1");
     }
 
 } 

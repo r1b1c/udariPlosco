@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/testnaIgra.unity
     guid: 00620a2585a513c48872af104765fd30
+  - enabled: 1
+    path: Assets/Scenes/registracija1.unity
+    guid: 1eaf5e27bf0091f40aecbf10695583be
   m_configObjects: {}
