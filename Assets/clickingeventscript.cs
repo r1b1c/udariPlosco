@@ -16,6 +16,10 @@ public class clickingeventscript : MonoBehaviour
 
     public void Quitbutton()
     {
+        if (FirebaseAuth.DefaultInstance.CurrentUser != null)
+        {
+            FirebaseAuth.DefaultInstance.SignOut();
+        }
         Application.Quit();
     }
 

@@ -12,7 +12,7 @@ using Firebase.Extensions;
 
 public class AuthController : MonoBehaviour {
 
-    public Text emailInput, passwordInput, username;
+    public Text emailInput, passwordInput, username, sporocilo;
     public static Player aktualni=null;
     
 
@@ -21,6 +21,11 @@ public class AuthController : MonoBehaviour {
         FirebaseAuth.DefaultInstance.SignInWithEmailAndPasswordAsync(emailInput.text,
                 passwordInput.text).ContinueWithOnMainThread(( task=>
                 {
+                    if (emailInput.text.Equals("") && passwordInput.text.Equals(""))
+                    {
+                        sporocilo.text = "Vnesite email in geslo.";
+                        return;
+                    }
                     //prekinjen
                     if (task.IsCanceled)
                     {
@@ -85,11 +90,25 @@ public class AuthController : MonoBehaviour {
         FirebaseAuth.DefaultInstance.CreateUserWithEmailAndPasswordAsync(emailInput.text,
             passwordInput.text).ContinueWithOnMainThread((task =>
             {
-                if(emailInput.text.Equals("") && passwordInput.text.Equals(""))
+                if (emailInput.text.Equals("") && passwordInput.text.Equals("") && username.text.Equals(""))
                 {
-                    print("Vnesite email in geslo!");
+                    sporocilo.text = "Vnesite podatke.";
                     return;
                 }
+
+                if (emailInput.text.Equals("") && passwordInput.text.Equals(""))
+                {
+                    sporocilo.text = "Vnesite email in geslo.";
+                    return;
+                }
+
+
+                if (username.text.Equals(""))
+                {
+                    sporocilo.text = "Vnesite uporabniško ime.";
+                    return;
+                }
+
                 //prekinjen
                 if (task.IsCanceled)
                 {
@@ -159,7 +178,6 @@ public class AuthController : MonoBehaviour {
         if(FirebaseAuth.DefaultInstance.CurrentUser != null)
         {
             FirebaseAuth.DefaultInstance.SignOut();
-            print("Odjava uspešna!");
         }
     }
 
@@ -175,13 +193,28 @@ public class AuthController : MonoBehaviour {
             case AuthError.AccountExistsWithDifferentCredentials:
                 break;
             case AuthError.MissingPassword:
-                    print("Vpišite geslo");
+                    sporocilo.text = "Vnesite geslo.";
+                break;
+            case AuthError.WeakPassword:
+                    sporocilo.text = "Geslo je prekratko.";
                 break;
             case AuthError.WrongPassword:
-                    print("Napačno geslo!");
+                    sporocilo.text = "Napačno geslo.";
                 break;
             case AuthError.InvalidEmail:
-                    print("Nepravilen email!");
+                    sporocilo.text = "Nepravilen email.";
+                break;
+            case AuthError.EmailAlreadyInUse:
+                    sporocilo.text = "Email je že v uporabi.";
+                break;
+            case AuthError.MissingEmail:
+                    sporocilo.text = "Vnesite email";
+                break;
+            case AuthError.UserNotFound:
+                    sporocilo.text = "Email ni registriran.";
+                break;
+            default:
+                    sporocilo.text = "Prišlo je do napake.";
                 break;
         }
 
@@ -193,6 +226,10 @@ public class AuthController : MonoBehaviour {
     {
         SceneManager.LoadScene("registracija1");
     }
+
+
+
+
 
 } 
 
