@@ -17,7 +17,7 @@ using Object = System.Object;
 
 public class ResoltManageScript : MonoBehaviour
 {
-  
+    public TextMeshProUGUI warning;
     private int scorepoints = score.scorepoints;
     private DatabaseReference _databaseReference;
     private string dataUrl="https://udariploscodb.firebaseio.com/";
@@ -28,13 +28,19 @@ public class ResoltManageScript : MonoBehaviour
     // Start is called before the first frame update
      void Start()
     {
+
         auth=FirebaseAuth.DefaultInstance;
         user = auth.CurrentUser;
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl(dataUrl);
         _databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
+
         //če imamo povezavo na bazo zapišemo rezultat in prikažemo leaderboard
-        if (_databaseReference != null)
+       
+        
+       
+        if (Application.internetReachability != NetworkReachability.NotReachable)
         {
+            warning.text = "";
             if (user != null) {
                 string displayName = user.DisplayName;
                 string email = user.Email;
@@ -46,9 +52,12 @@ public class ResoltManageScript : MonoBehaviour
         else
         {
             //izpiši da leaderboard ni na voljo
+            Debug.Log("ni povezave");
+            transform.GetChild(0).gameObject.SetActive(false);
+            warning.text = "Internetna povezava ni vzpostavljena!";
         }
       
-      
+
         
     }
     
@@ -76,61 +85,68 @@ public class ResoltManageScript : MonoBehaviour
     }
     private async  void RetriveLeaderBoard()
     {
-        
         //vrnenajvečje 4ri rezultate ki pa niso vrnjeni sortirano!
-       await FirebaseDatabase.DefaultInstance.GetReference("scores").OrderByChild("score").LimitToLast(5).GetValueAsync().ContinueWithOnMainThread(task =>
-        {
-            if (task.IsFaulted)
-            {
-                Debug.Log("error se je pojavil");
-                //todo če ni interneta se izpiše lokalni rezultati iz playerpref
-            } else if (task.IsCanceled)
-            {
-                //todo če ni interneta se izpiše lokalno iz playerpref
-                Debug.Log("klicanje je bilo preklicano");
-            }else if (task.IsCompleted)
-            {
-               
-                DataSnapshot snapshot = task.Result;
-                
-                // v returnedDictonery imamo Vrnjen Dictonery<key(identifyer od vnosa),<Dictonery<string(ime "uid"ali"score"),Object(rezultat uid ali uid)>>
-                Dictionary<string, Object> returnedDictonery = (Dictionary<string, Object>) snapshot.Value;
-                List<LeaderboardEntry> listOfLeaderboard=new List<LeaderboardEntry>();
-                long returnedScore;
-                Object returnedObjectScore;
-                string returnedId;
-                Object returnedIdObject;
-                string returnedUsername;
-                Object returnedUsernameObject;
-                foreach (KeyValuePair<string, Object> item in returnedDictonery)
+            await FirebaseDatabase.DefaultInstance.GetReference("scores").OrderByChild("score").LimitToLast(5)
+                .GetValueAsync().ContinueWithOnMainThread(task =>
                 {
-                    returnedObjectScore =((Dictionary<string, Object>) item.Value)["score"];
-                    returnedIdObject=((Dictionary<string,Object>)item.Value)["uid"];
-                    returnedUsernameObject = ((Dictionary<string, Object>) item.Value)["username"];
-                    returnedId = (string) returnedIdObject;
-                    returnedScore =(long)returnedObjectScore;
-                    returnedUsername = (string) returnedUsernameObject;
-                    listOfLeaderboard.Add(new LeaderboardEntry(returnedId,(int)returnedScore,returnedUsername));
-                }
-                IntListQuickSort(listOfLeaderboard);
-                listTop5 = listOfLeaderboard;
-            } 
-        } );
-       string name;
-       string score;
-       for (int i = 1; i < 6; i++)
-       {
-           name = "Name" + i;
-           score = "Score" + i;
-           TextMeshProUGUI tScore=transform.Find(score).GetComponent<TextMeshProUGUI>();
-           TextMeshProUGUI tName=transform.Find(name).GetComponent<TextMeshProUGUI>();
+
+                    if (task.IsFaulted)
+                    {
+                        Debug.Log("error se je pojavil");
+                        //todo če ni interneta se izpiše lokalni rezultati iz playerpref
+                    }
+                    else if (task.IsCanceled)
+                    {
+                        //todo če ni interneta se izpiše lokalno iz playerpref
+                        Debug.Log("klicanje je bilo preklicano");
+                    }
+                    else if (task.IsCompleted)
+                    {
+
+                        DataSnapshot snapshot = task.Result;
+
+                        // v returnedDictonery imamo Vrnjen Dictonery<key(identifyer od vnosa),<Dictonery<string(ime "uid"ali"score"),Object(rezultat uid ali uid)>>
+                        Dictionary<string, Object> returnedDictonery = (Dictionary<string, Object>) snapshot.Value;
+                        List<LeaderboardEntry> listOfLeaderboard = new List<LeaderboardEntry>();
+                        long returnedScore;
+                        Object returnedObjectScore;
+                        string returnedId;
+                        Object returnedIdObject;
+                        string returnedUsername;
+                        Object returnedUsernameObject;
+                        foreach (KeyValuePair<string, Object> item in returnedDictonery)
+                        {
+                            returnedObjectScore = ((Dictionary<string, Object>) item.Value)["score"];
+                            returnedIdObject = ((Dictionary<string, Object>) item.Value)["uid"];
+                            returnedUsernameObject = ((Dictionary<string, Object>) item.Value)["username"];
+                            returnedId = (string) returnedIdObject;
+                            returnedScore = (long) returnedObjectScore;
+                            returnedUsername = (string) returnedUsernameObject;
+                            listOfLeaderboard.Add(new LeaderboardEntry(returnedId, (int) returnedScore,
+                                returnedUsername));
+                        }
+
+                        IntListQuickSort(listOfLeaderboard);
+                        listTop5 = listOfLeaderboard;
+                    }
+                });
+        
+
+        string name;
+        string score;
+        for (int i = 1; i < 6; i++)
+        {
+            name = "Name" + i;
+            score = "Score" + i;
+            TextMeshProUGUI tScore=transform.Find(score).GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI tName=transform.Find(name).GetComponent<TextMeshProUGUI>();
                 
-           if (tName!=null && tScore!=null)
-           {
-                tName.text = listTop5[i-1].username; // namesto scora izpiši PLayerusername
-               tScore.text = listTop5[i-1].score.ToString();
-           }
-       }
+            if (tName!=null && tScore!=null)
+            {
+                tName.text = listTop5[i-1].username; 
+                tScore.text = listTop5[i-1].score.ToString();
+            }
+        }
     }
     private void WriteNewScore(string userId, int score,string username) {
         //dobimo aktivnega playerja
