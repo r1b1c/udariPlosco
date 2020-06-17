@@ -138,8 +138,8 @@ public class ResoltManageScript : MonoBehaviour
         {
             name = "Name" + i;
             score = "Score" + i;
-            TextMeshProUGUI tScore=transform.Find(score).GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI tName=transform.Find(name).GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI tScore=transform.GetChild(0).transform.Find(score).GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI tName=transform.GetChild(0).transform.Find(name).GetComponent<TextMeshProUGUI>();
                 
             if (tName!=null && tScore!=null)
             {
