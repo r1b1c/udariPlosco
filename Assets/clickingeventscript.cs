@@ -29,7 +29,7 @@ public class clickingeventscript : MonoBehaviour
 
     public void mainmenu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("start");
     }
 
     public void restart()
