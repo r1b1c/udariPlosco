@@ -12,7 +12,8 @@ using Firebase.Extensions;
 
 public class AuthController : MonoBehaviour {
 
-    public Text emailInput, passwordInput, username, sporocilo;
+    public Text  username, sporocilo;
+    public InputField emailInput, passwordInput;
     public static Player aktualni=null;
     
 

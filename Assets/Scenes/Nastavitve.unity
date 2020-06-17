@@ -149,7 +149,7 @@ RectTransform:
   m_GameObject: {fileID: 73925065}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.8910685, y: 3.8910685, z: 3.8910685}
+  m_LocalScale: {x: 2.551646, y: 2.551646, z: 2.551646}
   m_Children: []
   m_Father: {fileID: 1964781088}
   m_RootOrder: 2
@@ -626,7 +626,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 9, y: -0.5}
+  m_AnchoredPosition: {x: 22, y: -0.0000019073486}
   m_SizeDelta: {x: -28, y: -3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &451843806
@@ -661,7 +661,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Morje
+  m_Text: Pesek
 --- !u!222 &451843807
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -779,7 +779,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -8.9999, y: -423}
+  m_AnchoredPosition: {x: -56.9999, y: -362}
   m_SizeDelta: {x: 154.85721, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &860143762
@@ -874,7 +874,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 9, y: -0.5}
+  m_AnchoredPosition: {x: 33, y: 0}
   m_SizeDelta: {x: -28, y: -3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1128422545
@@ -909,7 +909,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Zvezde
+  m_Text: Zvezdnato nebo
 --- !u!222 &1128422546
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1028,7 +1028,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -8.9999, y: -255}
+  m_AnchoredPosition: {x: -56.9999, y: -194}
   m_SizeDelta: {x: 154.85721, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1215887973
@@ -1088,7 +1088,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!1 &1217552176
 GameObject:
   m_ObjectHideFlags: 0
@@ -1145,7 +1145,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Back
+  m_text: 'Nazaj
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1214,9 +1216,9 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1217552178}
-    characterCount: 4
+    characterCount: 6
     spriteCount: 0
-    spaceCount: 0
+    spaceCount: 1
     wordCount: 1
     linkCount: 0
     lineCount: 1
@@ -1280,7 +1282,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -12, y: -93}
+  m_AnchoredPosition: {x: -60, y: -32}
   m_SizeDelta: {x: 153.43353, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1275955638
@@ -1340,7 +1342,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &1408597209
 GameObject:
   m_ObjectHideFlags: 0
@@ -1710,7 +1712,7 @@ RectTransform:
   m_GameObject: {fileID: 1795845507}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.2962, y: 2.2962, z: 2.2962}
+  m_LocalScale: {x: 3.1164029, y: 3.1164029, z: 3.1164029}
   m_Children:
   - {fileID: 1217552177}
   m_Father: {fileID: 1964781088}
@@ -1718,7 +1720,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -210, y: 559}
+  m_AnchoredPosition: {x: -235, y: 596}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1795845509
@@ -1846,7 +1848,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 9, y: -0.5}
+  m_AnchoredPosition: {x: 30, y: 0.0000009536743}
   m_SizeDelta: {x: -28, y: -3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1815936220
@@ -1881,7 +1883,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Sonce
+  m_Text: vzhod sonca
 --- !u!222 &1815936221
 CanvasRenderer:
   m_ObjectHideFlags: 0
