@@ -19,6 +19,8 @@ public class AuthController : MonoBehaviour {
 
     public void Login()
     {
+        if (Application.internetReachability != NetworkReachability.NotReachable)
+        {
         FirebaseAuth.DefaultInstance.SignInWithEmailAndPasswordAsync(emailInput.text,
                 passwordInput.text).ContinueWithOnMainThread(( task=>
                 {
@@ -73,7 +75,7 @@ public class AuthController : MonoBehaviour {
 
 
                 }));
-
+        }else{sporocilo.text = "Ni internetne povezave.";}
 
     }
 
@@ -88,7 +90,9 @@ public class AuthController : MonoBehaviour {
 
     public void RegisterUser()
     {
-        FirebaseAuth.DefaultInstance.CreateUserWithEmailAndPasswordAsync(emailInput.text,
+        if (Application.internetReachability != NetworkReachability.NotReachable)
+        {
+            FirebaseAuth.DefaultInstance.CreateUserWithEmailAndPasswordAsync(emailInput.text,
             passwordInput.text).ContinueWithOnMainThread((task =>
             {
                 if (emailInput.text.Equals("") && passwordInput.text.Equals("") && username.text.Equals(""))
@@ -171,6 +175,7 @@ public class AuthController : MonoBehaviour {
 
 
             }));
+        }else{sporocilo.text = "Ni internetne povezave.";}
     }
 
     
