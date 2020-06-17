@@ -29,9 +29,9 @@ public class tileaction : MonoBehaviour
     {
         //določanje hitrosti plošč(neodvisno od frameov)
         GetComponent<Rigidbody2D>().velocity = new Vector3(0, -speed * Time.deltaTime, 0);
-        if (FindObjectOfType<score>().scoree > i * 10)
+        if (FindObjectOfType<score>().scoree > i * 2)
         {
-            speed += 200f;
+            speed += 100f;
             i++;
         }
     }
